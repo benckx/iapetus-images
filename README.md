@@ -1,10 +1,10 @@
 # About
 
-Some ImageUtils and ImagesFolderUtils methods implemented in Java and Kotlin.
+Some ImageUtils, ImagesFolderUtils and FaceUtils methods implemented in Java and Kotlin.
 
 ## ImagesUtils
 
-Methods to resize, compress, rotate, etc. individual images (in Java).
+Various methods to resize, compress, rotate, etc. individual images (in Java).
 
 ## ImagesFolderUtils
 
@@ -30,7 +30,7 @@ You can build such a CSV with this project: https://github.com/benckx/tensorflow
 
     FaceUtils.reFrameAroundFace(csv: String, frame: ImageContainingFace, output: String)
     
-For example, with this input image and frame (frames added for visualization purpose):
+For example, with this input image and frame (frames outlines added for visualization purpose; the CSV face data is in blue, the WAIST_LEVEL frame in red and orange):
 
     val WAIST_LEVEL = ImageContainingFace(640, 1080, Face(Rectangle(170, 170, 300, 300)))
 
