@@ -13,15 +13,15 @@ It doesn't override the original images, but create an output folder with the pr
 
 - List all images in folders and sub-folders:
 
-      listAllImages()
+      File.listAllImages()
     
-- Crop all images from input folder to proportions (e.g. 1x1, 16x9, etc.):    
+- Crop all images found in input folder to proportions (e.g. 1x1, 16x9, etc.):    
     
-      cropImagesToProportions(x: Int, y: Int)
+      File.cropImagesToProportions(x: Int, y: Int)
 
-- Resize all images found in folder to:
+- Resize all images found in input folder:
 
-      resizeImagesTo(width: Int, height: Int)
+      File.resizeImagesTo(width: Int, height: Int)
 
 # Import with Gradle
 
