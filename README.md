@@ -25,20 +25,26 @@ It doesn't override the original images, but create an output folder with the pr
 
 ## FaceUtils
 
-Crop pictures are the faces, based
+Crop pictures around the faces, based on information contained in a CSV file. 
+You can build such a CSV with this project: https://github.com/benckx/tensorflow-face-detection
+
+    FaceUtils.reFrameAroundFace(csv: String, frame: ImageContainingFace, output: String)
+    
+For example, with this input image (frames added for visualization purpose):
 
 ![](assets/debug_Beatles_with_Ed_Sullivan.jpg)
 
+With following frame:
+
+    val WAIST_LEVEL = ImageContainingFace(640, 1080, Face(Rectangle(170, 170, 300, 300)))
+
+It will extract the following:
 
 ![](assets/framed_0_Beatles_with_Ed_Sullivan.jpg)
 ![](assets/framed_1_Beatles_with_Ed_Sullivan.jpg)
 ![](assets/framed_2_Beatles_with_Ed_Sullivan.jpg)
 ![](assets/framed_3_Beatles_with_Ed_Sullivan.jpg)
 ![](assets/framed_4_Beatles_with_Ed_Sullivan.jpg)
-
-You can build such a CSV by checking this other project:
-
-https://github.com/benckx/tensorflow-face-detection
 
 # Import with Gradle
 
