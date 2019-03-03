@@ -25,7 +25,7 @@ It doesn't override the original images, but create an output folder with the pr
 
 ## FaceUtils
 
-Crop pictures around the faces, based on information contained in a CSV file. 
+Crop pictures around the faces (in such a way that faces are always at the same place in the output images), based on information contained in a CSV file. 
 You can build such a CSV with this project: https://github.com/benckx/tensorflow-face-detection
 
     FaceUtils.reFrameAroundFace(csv: String, frame: ImageContainingFace, output: String)
