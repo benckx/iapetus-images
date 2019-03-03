@@ -27,12 +27,14 @@ It doesn't override the original images, but create an output folder with the pr
 
 Crop pictures are the faces, based
 
-![beatles_input](assets/debug_Beatles_with_Ed_Sullivan.jpg)
-![beatles_input](assets/framed_0_Beatles_with_Ed_Sullivan.jpg =160x270)
-![beatles_input](assets/framed_1_Beatles_with_Ed_Sullivan.jpg =160x270)
-![beatles_input](assets/framed_2_Beatles_with_Ed_Sullivan.jpg =160x270)
-![beatles_input](assets/framed_3_Beatles_with_Ed_Sullivan.jpg =160x270)
-![beatles_input](assets/framed_4_Beatles_with_Ed_Sullivan.jpg =160x270)
+![](assets/debug_Beatles_with_Ed_Sullivan.jpg)
+
+
+![](assets/framed_0_Beatles_with_Ed_Sullivan.jpg)
+![](assets/framed_1_Beatles_with_Ed_Sullivan.jpg)
+![](assets/framed_2_Beatles_with_Ed_Sullivan.jpg)
+![](assets/framed_3_Beatles_with_Ed_Sullivan.jpg)
+![](assets/framed_4_Beatles_with_Ed_Sullivan.jpg)
 
 You can build such a CSV by checking this other project:
 
