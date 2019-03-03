@@ -30,13 +30,11 @@ You can build such a CSV with this project: https://github.com/benckx/tensorflow
 
     FaceUtils.reFrameAroundFace(csv: String, frame: ImageContainingFace, output: String)
     
-For example, with this input image (frames added for visualization purpose):
-
-![](assets/debug_Beatles_with_Ed_Sullivan.jpg)
-
-With following frame:
+For example, with this input image and frame (frames added for visualization purpose):
 
     val WAIST_LEVEL = ImageContainingFace(640, 1080, Face(Rectangle(170, 170, 300, 300)))
+
+![](assets/debug_Beatles_with_Ed_Sullivan.jpg)
 
 It will extract the following:
 
