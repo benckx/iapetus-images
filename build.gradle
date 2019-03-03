@@ -14,10 +14,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.3.11"
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.openjfx:javafx-fxml:12-ea+14'
-    testCompile 'org.openjfx:javafx-fxml:11'
-
-    compile 'com.github.davidcarboni:resource-utils:1.2.2'
 }
 
 compileKotlin {
