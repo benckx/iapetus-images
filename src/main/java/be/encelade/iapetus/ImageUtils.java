@@ -18,6 +18,7 @@ import static java.awt.Color.WHITE;
 import static java.awt.Image.SCALE_SMOOTH;
 import static java.awt.RenderingHints.*;
 
+@SuppressWarnings("unused")
 public class ImageUtils {
 
     private final static Logger logger = Logger.getLogger(ImageUtils.class.getName());

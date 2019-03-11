@@ -7,6 +7,7 @@ import javax.imageio.ImageIO
 /**
  * Utils to resize and crop folders of images.
  */
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 object ImagesFolderUtils {
 
     private val extensions = listOf("jpg", "jpeg", "png")
@@ -37,6 +38,7 @@ object ImagesFolderUtils {
         initDirectory(output)
 
         listAllImages()
+            .parallelStream()
             .forEach {
                 try {
                     val image = ImageIO.read(it)
@@ -57,6 +59,7 @@ object ImagesFolderUtils {
         initDirectory(output)
 
         listAllImages()
+            .parallelStream()
             .forEach {
                 try {
                     val image = ImageIO.read(it)
