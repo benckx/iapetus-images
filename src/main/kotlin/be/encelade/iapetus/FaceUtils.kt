@@ -10,7 +10,6 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import javax.imageio.ImageIO
-import javax.imageio.ImageIO.read as readImage
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 object FaceUtils {
@@ -62,11 +61,11 @@ object FaceUtils {
                         val resizedFrame = inputImageWithFace.resize(frame)
                         try {
                             val subImage = inputImageWithFace.getSubImage(inputImage, resizedFrame)
-                            if (subImage.width >= resizedFrame.width && subImage.height >= resizedFrame.width) {
+                            // if (subImage.width >= resizedFrame.width && subImage.height >= resizedFrame.width) {
                                 val cropped = ImageUtils.resize(subImage, resizedFrame.width, resizedFrame.height)
                                 val outputImage = File("$output/framed_${i}_${it.key.split("/").last()}")
                                 ImageIO.write(cropped, "jpg", outputImage)
-                            }
+                            // }
                         } catch (e : Exception) {
                             println(e)
                             println(face)
