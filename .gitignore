@@ -4,7 +4,8 @@
 
 .gradle/
 build/
-gradle/
 out/
+
+.attach_pid*
 
 test_output_faces
