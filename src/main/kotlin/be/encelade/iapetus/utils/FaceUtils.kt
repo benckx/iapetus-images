@@ -21,8 +21,8 @@ object FaceUtils {
     val WAIST_LEVEL = ImageContainingFace(640, 1080, Face(Rectangle(170, 170, 300, 300)))
     val KNEE_LEVEL = ImageContainingFace(640, 1080, Face(Rectangle(245, 50, 150, 150)))
 
-    fun reFrameAroundFace(csv: String, frame: ImageContainingFace, output: String, debug: Boolean = false) {
-        val outputFolder = File(output)
+    fun reFrameAroundFace(csv: String, frame: ImageContainingFace, outputFolderName: String, debug: Boolean = false) : File {
+        val outputFolder = File(outputFolderName)
 
         if (outputFolder.exists()) {
             outputFolder.deleteRecursively()
@@ -66,7 +66,7 @@ object FaceUtils {
                             val subImage = inputImageWithFace.getSubImage(inputImage, resizedFrame)
                             // if (subImage.width >= resizedFrame.width && subImage.height >= resizedFrame.width) {
                                 val cropped = ImageUtils.resize(subImage, resizedFrame.width, resizedFrame.height)
-                                val outputImage = File("$output/framed_${i}_${it.key.split("/").last()}")
+                                val outputImage = File("$outputFolderName/framed_${i}_${it.key.split("/").last()}")
                                 ImageIO.write(cropped, "jpg", outputImage)
                             // }
                         } catch (e : Exception) {
@@ -78,9 +78,11 @@ object FaceUtils {
                 }
 
                 if (debug) {
-                    ImageIO.write(debugImage, "jpg", File("$output/debug_${it.key.split("/").last()}"))
+                    ImageIO.write(debugImage, "jpg", File("$outputFolderName/debug_${it.key.split("/").last()}"))
                 }
             }
+
+        return outputFolder
     }
 
     fun parseFacesCSV(csv: String): Map<String, List<Face>> {
@@ -114,4 +116,5 @@ object FaceUtils {
 
         return result
     }
+
 }

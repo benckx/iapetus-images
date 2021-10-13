@@ -105,10 +105,10 @@ object ImagesFolderUtils {
         }
     }
 
-    private fun initDirectory(outputFolder: String) {
-        println("output folder: $outputFolder")
+    private fun initDirectory(outputFolderName: String) {
+        println("output folder: $outputFolderName")
 
-        val outputFolder = File(outputFolder)
+        val outputFolder = File(outputFolderName)
 
         if (outputFolder.exists()) {
             outputFolder.deleteRecursively()
