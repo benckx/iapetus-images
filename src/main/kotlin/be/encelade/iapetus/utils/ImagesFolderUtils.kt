@@ -1,7 +1,8 @@
 package be.encelade.iapetus.utils
 
 import be.encelade.iapetus.ImageUtils
-import org.apache.commons.lang3.RandomStringUtils
+import org.apache.commons.io.FileUtils
+import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -24,20 +25,24 @@ object ImagesFolderUtils {
         // TODO: flat map?
         listFiles()
             .sorted()
-            .forEach {
-                if (it.isDirectory) {
-                    result.addAll(it.listAllImages())
-                } else if (it.isFile && extensions.contains(it.name.split(".").last())) {
-                    result.add(it)
+            .forEach { file ->
+                if (file.isDirectory) {
+                    result.addAll(file.listAllImages())
+                } else if (file.isFile && extensions.contains(file.name.split(".").last())) {
+                    result.add(file)
                 }
             }
 
         return result
     }
 
-    fun File.resizeImagesTo(width: Int, height: Int, output: String = "${this.absolutePath}-${width}x$height"): File {
+    fun File.resizeImagesTo(size: Int, outputFolder: String = "${this.absolutePath}-$size"): File {
+        return resizeImagesTo(size, size, outputFolder)
+    }
+
+    fun File.resizeImagesTo(width: Int, height: Int, outputFolder: String = "${this.absolutePath}-${width}x$height"): File {
         validateDirectory()
-        initDirectory(output)
+        initDirectory(outputFolder)
 
         listAllImages()
             .parallelStream()
@@ -46,7 +51,7 @@ object ImagesFolderUtils {
                     val image = ImageIO.read(imageFile)
                     if (image.width >= width && image.height >= height) {
                         val resized = ImageUtils.resize(image, width, height, image.type)
-                        ImageIO.write(resized, imageFile.extension, File("$output/${imageFile.name}"))
+                        ImageIO.write(resized, imageFile.extension, File("$outputFolder/${imageFile.name}"))
                     } else {
                         println("image ${imageFile.name} is smaller than $width x $height")
                     }
@@ -55,16 +60,16 @@ object ImagesFolderUtils {
                 }
             }
 
-        return File(output)
+        return File(outputFolder)
     }
 
-    fun File.cropImagesToSquares(output: String = "${this.absolutePath}-square"): File {
-        return cropImagesToProportions(1, 1, output)
+    fun File.cropImagesToSquares(outputFolder: String = "${this.absolutePath}-square"): File {
+        return cropImagesToProportions(1, 1, outputFolder)
     }
 
-    fun File.cropImagesToProportions(x: Int, y: Int, output: String = "${this.absolutePath}-${x}x$y"): File {
+    fun File.cropImagesToProportions(x: Int, y: Int, outputFolder: String = "${this.absolutePath}-${x}x$y"): File {
         validateDirectory()
-        initDirectory(output)
+        initDirectory(outputFolder)
 
         listAllImages()
             .parallelStream()
@@ -72,26 +77,26 @@ object ImagesFolderUtils {
                 try {
                     val image = ImageIO.read(imageFile)
                     val cropped = image.cropToProportions(x, y)
-                    ImageIO.write(cropped, imageFile.extension, File("$output/${imageFile.name}"))
+                    ImageIO.write(cropped, imageFile.extension, File("$outputFolder${File.separator}${imageFile.name}"))
                 } catch (e: Exception) {
                     println(e)
                 }
             }
 
-        return File(output)
+        return File(outputFolder)
     }
 
-    fun File.randomizeImageNames(output: String = "${this.absolutePath}-rnd"): File {
+    fun File.randomizeImageNames(outputFolder: String = "${this.absolutePath}-rnd"): File {
         validateDirectory()
-        initDirectory(output)
+        initDirectory(outputFolder)
 
         listAllImages()
             .forEach { imageFile ->
-                val randomFileName = "${RandomStringUtils.randomAlphanumeric(24)}.${imageFile.extension}"
-                imageFile.renameTo(File(randomFileName))
+                val randomFileName = "${randomAlphanumeric(24)}.${imageFile.extension}"
+                FileUtils.copyFile(imageFile, File("$outputFolder${File.separator}$randomFileName"))
             }
 
-        return File(output)
+        return File(outputFolder)
     }
 
     private fun File.validateDirectory() {
@@ -100,10 +105,10 @@ object ImagesFolderUtils {
         }
     }
 
-    private fun initDirectory(output: String) {
-        println("output folder: $output")
+    private fun initDirectory(outputFolder: String) {
+        println("output folder: $outputFolder")
 
-        val outputFolder = File(output)
+        val outputFolder = File(outputFolder)
 
         if (outputFolder.exists()) {
             outputFolder.deleteRecursively()
