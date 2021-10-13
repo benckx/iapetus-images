@@ -17,6 +17,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    compile "org.apache.commons:commons-lang3:3.12.0"
 
     testCompile 'junit:junit:4.13.2'
 }

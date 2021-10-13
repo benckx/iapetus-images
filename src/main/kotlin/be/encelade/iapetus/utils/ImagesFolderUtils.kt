@@ -1,6 +1,7 @@
 package be.encelade.iapetus.utils
 
 import be.encelade.iapetus.ImageUtils
+import org.apache.commons.lang3.RandomStringUtils
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -34,42 +35,63 @@ object ImagesFolderUtils {
         return result
     }
 
-    fun File.resizeImagesTo(width: Int, height: Int, output: String = "${this.absolutePath}-${width}x$height") {
+    fun File.resizeImagesTo(width: Int, height: Int, output: String = "${this.absolutePath}-${width}x$height"): File {
         validateDirectory()
         initDirectory(output)
 
         listAllImages()
             .parallelStream()
-            .forEach {
+            .forEach { imageFile ->
                 try {
-                    val image = ImageIO.read(it)
+                    val image = ImageIO.read(imageFile)
                     if (image.width >= width && image.height >= height) {
                         val resized = ImageUtils.resize(image, width, height, image.type)
-                        ImageIO.write(resized, "jpg", File("$output/${it.name}"))
+                        ImageIO.write(resized, imageFile.extension, File("$output/${imageFile.name}"))
                     } else {
-                        println("image ${it.name} is smaller than $width x $height")
+                        println("image ${imageFile.name} is smaller than $width x $height")
                     }
                 } catch (e: Exception) {
                     println(e)
                 }
             }
+
+        return File(output)
     }
 
-    fun File.cropImagesToProportions(x: Int, y: Int, output: String = "${this.absolutePath}-${x}x$y") {
+    fun File.cropImagesToSquares(output: String = "${this.absolutePath}-square"): File {
+        return cropImagesToProportions(1, 1, output)
+    }
+
+    fun File.cropImagesToProportions(x: Int, y: Int, output: String = "${this.absolutePath}-${x}x$y"): File {
         validateDirectory()
         initDirectory(output)
 
         listAllImages()
             .parallelStream()
-            .forEach {
+            .forEach { imageFile ->
                 try {
-                    val image = ImageIO.read(it)
+                    val image = ImageIO.read(imageFile)
                     val cropped = image.cropToProportions(x, y)
-                    ImageIO.write(cropped, "jpg", File("$output/${it.name}"))
+                    ImageIO.write(cropped, imageFile.extension, File("$output/${imageFile.name}"))
                 } catch (e: Exception) {
                     println(e)
                 }
             }
+
+        return File(output)
+    }
+
+    fun File.randomizeImageNames(output: String = "${this.absolutePath}-rnd"): File {
+        validateDirectory()
+        initDirectory(output)
+
+        listAllImages()
+            .forEach { imageFile ->
+                val randomFileName = "${RandomStringUtils.randomAlphanumeric(24)}.${imageFile.extension}"
+                imageFile.renameTo(File(randomFileName))
+            }
+
+        return File(output)
     }
 
     private fun File.validateDirectory() {
@@ -111,4 +133,5 @@ object ImagesFolderUtils {
             }
         }
     }
+
 }
