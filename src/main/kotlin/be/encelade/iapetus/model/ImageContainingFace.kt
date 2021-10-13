@@ -1,4 +1,4 @@
-package be.encelade.iapetus
+package be.encelade.iapetus.model
 
 import java.awt.Rectangle
 import java.awt.image.BufferedImage

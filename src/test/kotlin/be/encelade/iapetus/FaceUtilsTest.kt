@@ -1,7 +1,7 @@
 package be.encelade.iapetus
 
-import be.encelade.iapetus.FaceUtils.WAIST_LEVEL
-import be.encelade.iapetus.FaceUtils.reFrameAroundFace
+import be.encelade.iapetus.utils.FaceUtils.WAIST_LEVEL
+import be.encelade.iapetus.utils.FaceUtils.reFrameAroundFace
 import org.junit.Test
 import java.io.File
 

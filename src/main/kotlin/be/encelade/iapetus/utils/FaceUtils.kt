@@ -1,5 +1,8 @@
-package be.encelade.iapetus
+package be.encelade.iapetus.utils
 
+import be.encelade.iapetus.ImageUtils
+import be.encelade.iapetus.model.Face
+import be.encelade.iapetus.model.ImageContainingFace
 import java.awt.BasicStroke
 import java.awt.Color.*
 import java.awt.Rectangle

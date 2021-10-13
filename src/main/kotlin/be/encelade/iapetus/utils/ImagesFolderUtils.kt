@@ -1,5 +1,6 @@
-package be.encelade.iapetus
+package be.encelade.iapetus.utils
 
+import be.encelade.iapetus.ImageUtils
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
