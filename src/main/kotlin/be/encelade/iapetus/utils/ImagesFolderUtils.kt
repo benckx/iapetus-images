@@ -27,7 +27,7 @@ object ImagesFolderUtils {
         val result = mutableListOf<File>()
 
         // TODO: flat map?
-        listFiles()
+        listFiles()!!
             .sorted()
             .forEach { file ->
                 if (file.isDirectory) {
@@ -44,7 +44,11 @@ object ImagesFolderUtils {
         return resizeImagesTo(size, size, outputFolder)
     }
 
-    fun File.resizeImagesTo(width: Int, height: Int, outputFolder: String = "${this.absolutePath}-${width}x$height"): File {
+    fun File.resizeImagesTo(
+        width: Int,
+        height: Int,
+        outputFolder: String = "${this.absolutePath}-${width}x$height"
+    ): File {
         validateDirectory()
         initDirectory(outputFolder)
 
@@ -161,6 +165,78 @@ object ImagesFolderUtils {
         }
 
         return File(outputFolder)
+    }
+
+    fun File.cutVerticalStripes(nbrOfStripes: Int, output: String = "${this.absolutePath}-v$nbrOfStripes") {
+        validateDirectory()
+        initDirectory(output)
+
+        listAllImages()
+            .parallelStream()
+            .forEach {
+                try {
+                    val image = ImageIO.read(it)
+                    val stripeWidth = image.width / nbrOfStripes
+                    val fileName = it.name.split(".").first()
+                    val extension = it.name.split(".").last()
+
+                    (0 until nbrOfStripes).forEach { i ->
+                        val stripe = image.getSubimage(stripeWidth * i, 0, stripeWidth, image.height)
+                        ImageIO.write(stripe, "jpg", File("$output/$fileName-strip$i.$extension"))
+                    }
+                } catch (e: Exception) {
+                    println(e)
+                }
+            }
+    }
+
+    fun File.cutHorizontalStripes(nbrOfStripes: Int, output: String = "${this.absolutePath}-h$nbrOfStripes") {
+        validateDirectory()
+        initDirectory(output)
+
+        listAllImages()
+            .parallelStream()
+            .forEach {
+                try {
+                    val image = ImageIO.read(it)
+                    val stripeHeight = image.height / nbrOfStripes
+                    val fileName = it.name.split(".").first()
+                    val extension = it.name.split(".").last()
+
+                    (0 until nbrOfStripes).forEach { i ->
+                        val stripe = image.getSubimage(0, stripeHeight * i, image.width, stripeHeight)
+                        ImageIO.write(stripe, "jpg", File("$output/$fileName-strip$i.$extension"))
+                    }
+                } catch (e: Exception) {
+                    println(e)
+                }
+            }
+    }
+
+    fun File.cutPiecesOf(width: Int, height: Int, output: String = "${this.absolutePath}-${width}x${height}") {
+        validateDirectory()
+        initDirectory(output)
+
+        listAllImages()
+            .parallelStream()
+            .forEach {
+                try {
+                    val image = ImageIO.read(it)
+                    val xCuts = image.width / width
+                    val yCuts = image.height / height
+                    val fileName = it.name.split(".").first()
+                    val extension = it.name.split(".").last()
+
+                    (0 until xCuts).forEach { x ->
+                        (0 until yCuts).forEach { y ->
+                            val stripe = image.getSubimage(x * width, y * height, width, height)
+                            ImageIO.write(stripe, extension, File("$output/$fileName-${x}x${y}.$extension"))
+                        }
+                    }
+                } catch (e: Exception) {
+                    println(e)
+                }
+            }
     }
 
     /**

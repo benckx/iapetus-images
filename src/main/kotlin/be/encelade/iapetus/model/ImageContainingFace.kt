@@ -44,7 +44,7 @@ data class ImageContainingFace(val width: Int, val height: Int, val face: Face) 
         )
     }
 
-    fun resize(targetFrame: ImageContainingFace) : ImageContainingFace {
+    fun resize(targetFrame: ImageContainingFace): ImageContainingFace {
         return targetFrame.resize(getRatio(targetFrame))
     }
 
@@ -73,4 +73,5 @@ data class ImageContainingFace(val width: Int, val height: Int, val face: Face) 
     private fun centerOffsetY(): Int {
         return face.rectangle.y + (face.rectangle.height / 2)
     }
+
 }
