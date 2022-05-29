@@ -3,8 +3,12 @@ package be.encelade.iapetus.utils
 import be.encelade.iapetus.ImageUtils
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
+import org.apache.commons.lang3.RandomUtils.nextInt
+import java.awt.Rectangle
 import java.awt.image.BufferedImage
+import java.awt.image.BufferedImage.TYPE_INT_RGB
 import java.io.File
+import java.util.concurrent.Executors
 import javax.imageio.ImageIO
 
 /**
@@ -97,6 +101,82 @@ object ImagesFolderUtils {
             }
 
         return File(outputFolder)
+    }
+
+    // TODO: add shift in output folder name
+    /**
+     * Assumes all input images have the same resolution.
+     */
+    fun File.createMosaics(
+        width: Int,
+        height: Int,
+        nbrOfOutputImages: Int,
+        maxShiftX: Int = 0,
+        maxShiftY: Int = 0,
+        outputFolder: String = "${absolutePath}-mosaic-${width}x$height"
+    ): File {
+        validateDirectory()
+        initDirectory(outputFolder)
+
+        val imageFiles = listAllImages()
+        val nbrOfInputImages = imageFiles.size
+        val executor = Executors.newFixedThreadPool(20)
+
+        repeat(nbrOfOutputImages) {
+            executor.execute {
+                val baseImageFile = imageFiles[nextInt(0, nbrOfInputImages)]
+                val baseImage = ImageIO.read(baseImageFile)
+                val baseImageX = (width - baseImage.width) / 2 + (nextInt(0, maxShiftX * 2) - maxShiftX)
+                val baseImageY = (height - baseImage.height) / 2 + (nextInt(0, maxShiftY * 2) - maxShiftY)
+                val outputImage = BufferedImage(width, height, TYPE_INT_RGB)
+                val graphics2D = outputImage.createGraphics()
+
+                val outputRectangle = Rectangle(0, 0, width, height) // boundaries
+                val drawnRectangles = mutableListOf<Rectangle>() // avoid drawing twice the same location
+
+                fun drawRandomImageAt(x: Int, y: Int) {
+                    val imageFile = imageFiles[nextInt(0, nbrOfInputImages)]
+                    val image = ImageIO.read(imageFile)
+                    graphics2D.drawImage(image, null, x, y)
+                    drawnRectangles += Rectangle(x, y, image.width, image.height)
+
+                    // recursion
+                    rectanglesAround(image, x, y)
+                        .filter { rectangle -> rectangle.intersects(outputRectangle) }
+                        .filterNot { rectangle -> drawnRectangles.contains(rectangle) }
+                        .forEach { rectangle ->
+                            drawRandomImageAt(rectangle.x, rectangle.y)
+                        }
+                }
+
+                drawRandomImageAt(baseImageX, baseImageY)
+                val randomFileName = "${randomAlphanumeric(24).uppercase()}.png"
+                ImageIO.write(outputImage, "png", File("$outputFolder${File.separator}$randomFileName"))
+            }
+        }
+
+        executor.shutdown()
+        while (!executor.isTerminated) {
+            Thread.sleep(50)
+        }
+
+        return File(outputFolder)
+    }
+
+    /**
+     * @return The 8 [[Rectangle]] locations around that [[BufferedImage]] (+ the image rectangle itself)
+     */
+    private fun rectanglesAround(image: BufferedImage, imageX: Int, imageY: Int): List<Rectangle> {
+        return IntRange(-1, 1).flatMap { x ->
+            IntRange(-1, 1).map { y ->
+                Rectangle(
+                    imageX + x * image.width,
+                    imageY + y * image.height,
+                    image.width,
+                    image.height
+                )
+            }
+        }
     }
 
     private fun File.validateDirectory() {

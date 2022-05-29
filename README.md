@@ -4,7 +4,7 @@
 
 # About
 
-Collection of functions to prepare datasets for Machine Learning training;
+Collection of functions to prepare datasets for Machine Learning training (resize, crop, cut pieces, create mosaic, etc.)
 
 ## ImagesUtils
 
@@ -37,7 +37,7 @@ File.resizeImagesTo(size = 1024)
 All those functions return a `File`, and therefore can be chained:
 
 ```kotlin
-val folder = File("/home/user/Pictures/dataset/my_data_set")
+val folder = File("/home/benoit/Pictures/dataset/my_data_set")
 
 folder
     .cropImagesToSquares()
