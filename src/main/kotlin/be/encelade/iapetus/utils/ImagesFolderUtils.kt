@@ -107,7 +107,6 @@ object ImagesFolderUtils {
         return File(outputFolder)
     }
 
-    // TODO: add shift in output folder name
     /**
      * Assumes all input images have the same resolution.
      */
@@ -117,7 +116,7 @@ object ImagesFolderUtils {
         nbrOfOutputImages: Int,
         maxShiftX: Int = 0,
         maxShiftY: Int = 0,
-        outputFolder: String = "${absolutePath}-mosaic-${width}x$height"
+        outputFolder: String = "${this.absolutePath}-mosaic-${width}x$height-${maxShiftX}x${maxShiftY}"
     ): File {
         validateDirectory()
         initDirectory(outputFolder)

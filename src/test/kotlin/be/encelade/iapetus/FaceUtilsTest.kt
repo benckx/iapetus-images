@@ -13,4 +13,5 @@ class FaceUtilsTest {
         val csv = File("src/test/resources/beatles.csv").absolutePath
         reFrameAroundFace(csv, WAIST_LEVEL, outputFolder, debug = true)
     }
+
 }

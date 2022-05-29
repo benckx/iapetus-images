@@ -4,7 +4,8 @@
 
 # About
 
-Collection of functions to prepare datasets for Machine Learning training (resize, crop, cut pieces, create mosaic, etc.)
+Collection of functions to prepare datasets for Machine Learning training (resize, crop, cut pieces, create mosaic,
+etc.)
 
 ## ImagesUtils
 
@@ -33,6 +34,16 @@ File.cropImagesToProportions(x = 1, y = 2)
 File.resizeImagesTo(width = 1920, height = 1080)
 File.resizeImagesTo(size = 1024)
 ```
+
+### Create Mosaics
+
+Create e.g. 4K images from 1080p images.
+
+```kotlin
+File.createMosaics(width = 3840, height = 2160, nbrOfOutputImages = 2000)
+```
+
+### Chain calls
 
 All those functions return a `File`, and therefore can be chained:
 
